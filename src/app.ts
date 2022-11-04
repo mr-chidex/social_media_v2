@@ -1,12 +1,12 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 
+import config from './config';
+
 const app: Application = express();
-dotenv.config();
-const apiVersion = process.env.API_VERSION || 'v1';
+const apiVersion = config.API_VERSION || 'v1';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
