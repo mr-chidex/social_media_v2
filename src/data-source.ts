@@ -17,4 +17,3 @@ export const AppDataSource = new DataSource({
   migrations: ['dist/migrations/*.js'],
   subscribers: [],
 });
-console.log(__dirname + '/migrations/*{.ts,.js}');
