@@ -11,7 +11,12 @@
     "lint": "eslint src/**/*.ts",
     "lint:format": "eslint src/**/*.ts --fix",
     "build": "tsc -p .",
-    "build:watch": "tsc --watch"
+    "build:watch": "tsc --watch",
+    "migration:create": "yarn typeorm migration:create src/migrations/M",
+    "migration:gen": "yarn typeorm migration:generate -o dist/migrations/M -d dist/data-source.js",
+    "migration:run": "yarn typeorm migration:run -d dist/data-source.js",
+    "migration:revert": "yarn migration:build && yarn typeorm -- migration:revert -d src/ormconfig.ts",
+    "migration:show": "yarn typeorm migration:show -d src/data-source.ts"
   },
   "keywords": [],
   "author": "",

@@ -9,9 +9,12 @@ export const AppDataSource = new DataSource({
   username: config.DB_USER,
   password: config.DB_PASS,
   database: config.DB_NAME,
-  //   synchronize: true,
+  synchronize: false,
   logging: false,
-  entities: ['/src/entity/**/*.ts'],
-  migrations: [],
+  //   entities: ['src/entities/*{.ts, .js}'],
+  //   migrations: ['src/migrations/*{.ts, .js}'],
+  entities: ['dist/entities/*.js'],
+  migrations: ['dist/migrations/*.js'],
   subscribers: [],
 });
+console.log(__dirname + '/migrations/*{.ts,.js}');
