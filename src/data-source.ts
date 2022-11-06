@@ -11,8 +11,6 @@ export const AppDataSource = new DataSource({
   database: config.DB_NAME,
   synchronize: false,
   logging: false,
-  //   entities: ['src/entities/*{.ts, .js}'],
-  //   migrations: ['src/migrations/*{.ts, .js}'],
   entities: ['dist/entities/*.js'],
   migrations: ['dist/migrations/*.js'],
   subscribers: [],
