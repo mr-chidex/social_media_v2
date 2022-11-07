@@ -22,9 +22,8 @@ content-type: application/json
 GET http://localhost:8000/api/v1/users
 
 ### update a user
-PATCH http://localhost:8000/api/v1/auth/users
-content-type: application/json
-Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njc4NTU3NDE1MTksImlzcyI6Ik1yLUNoaWRleCIsInVzZXJuYW1lIjoibXJjaGlkZXgiLCJlbWFpbCI6Im1yY2hpZGV4QGVtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJwcm9maWxlUGljIjpudWxsLCJjb3ZlclBpYyI6bnVsbCwiZXhwIjoxNjY3ODU1OTE0MzE5fQ.7vRI9Qo_D2s7aQoYzXuvYLemY99TUz7SONGaxyoMNqw"
+PATCH  http://localhost:8000/api/v1/users
+Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njc4NTc1MDU5MjgsImlzcyI6Ik1yLUNoaWRleCIsImlkIjoiMTcyZmI4NzQtMzg2Ny00YjY5LWJiM2UtZjAwYTI1NzZjYmI3IiwidXNlcm5hbWUiOiJtcmNoaWRleCIsImVtYWlsIjoibXJjaGlkZXhAZW1haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsInByb2ZpbGVQaWMiOm51bGwsImNvdmVyUGljIjpudWxsLCJleHAiOjE2Njc4NTc2Nzg3Mjh9.iqO9Nkj81AkC1A48EoUDQMylJ_OGIYrfOLHCdC15g0A"
 
 {
     "username": "mrchidex",
