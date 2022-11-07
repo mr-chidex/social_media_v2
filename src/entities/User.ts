@@ -19,10 +19,10 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Column('simple-json')
+  @Column('simple-json', { nullable: true })
   profilePic: { url: string; id: string };
 
-  @Column('simple-json')
+  @Column('simple-json', { nullable: true })
   coverPic: { url: string; id: string };
 
   @Column({

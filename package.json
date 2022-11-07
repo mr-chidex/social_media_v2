@@ -12,9 +12,11 @@
     "lint:format": "eslint src/**/*.ts --fix",
     "build": "tsc -p .",
     "build:watch": "tsc --watch",
+    "migration:create": "yarn typeorm migration:create  src/migrations/M",
     "migration:gen": "yarn build && yarn typeorm migration:generate -o dist/migrations/M -d dist/data-source.js",
     "migration:run": "yarn typeorm migration:run -d dist/data-source.js",
     "migration:revert": "yarn typeorm migration:revert -d dist/data-source.js",
+    "migration:show": "yarn typeorm migration:show -d dist/data-source.js",
     "prepare": "husky install"
   },
   "keywords": [],
