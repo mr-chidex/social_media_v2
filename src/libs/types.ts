@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { User } from '../entities/User';
 
 export interface UserDoc {
-  _id?: string;
+  id?: string;
   username: string;
   email: string;
   password: string;
@@ -27,7 +27,7 @@ export interface Image {
 }
 
 export interface IRequest extends Request {
-  user?: { _id: string; isAdmin: boolean };
+  user?: { id: string; isAdmin: boolean };
 }
 
 export type UserDocument = UserDoc & User;

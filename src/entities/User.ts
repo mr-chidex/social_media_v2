@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  OneToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -41,6 +50,10 @@ export class User extends BaseEntity {
 
   @OneToMany((type) => User, (user) => user.follow_parent)
   following: User[];
+
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
 
   @Column()
   @UpdateDateColumn()

@@ -7,7 +7,7 @@ export default (user: UserDoc) => {
     {
       iat: Date.now(),
       iss: 'Mr-Chidex',
-      _id: user._id,
+      id: user.id,
       username: user.username,
       email: user.email,
       isAdmin: user.isAdmin,

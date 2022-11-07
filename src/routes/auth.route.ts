@@ -1,5 +1,5 @@
 import expressPromise from 'express-promise-router';
-import { registerUser, loginUser } from '../controllers/auth.controllers';
+import { registerUser, loginUser } from '../controllers';
 
 const router = expressPromise();
 

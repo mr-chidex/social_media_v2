@@ -1,9 +1,7 @@
 node_modules
 .env
 coverage
-auth.middleware.ts
 *.log
 dist
 posts.route.ts
-users.route.ts
 1667816168842-M.js
