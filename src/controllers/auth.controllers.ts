@@ -1,9 +1,11 @@
 import { RequestHandler } from 'express';
+import bcrypt from 'bcrypt';
 
-import { UserDoc } from '../libs/types';
+import { UserDoc, UserDocument } from '../libs/types';
 import { ValidateUser } from '../utils/user.validators';
 import { User } from '../entities/User';
 import hashPassword from '../utils/hashPassword';
+import getToken from '../utils/getToken';
 
 /**
  *
@@ -12,35 +14,79 @@ import hashPassword from '../utils/hashPassword';
  * @acces Public
  */
 export const registerUser: RequestHandler = async (req, res) => {
-  //validate request body
-  console.log('body', req.body);
   const { error, value } = ValidateUser(req.body as UserDoc);
 
-  if (error) return res.status(422).json({ message: error.details[0].message });
+  if (error)
+    return res.status(422).json({
+      error: true,
+      message: error.details[0].message,
+    });
 
   const { username, email, password } = value as UserDoc;
 
   //check if username is already in use
   let userExist = await User.findOneBy({ username });
 
-  console.log('isExist', userExist);
-  if (userExist) return res.status(400).json({ message: 'username already in use', status: 'error' });
+  if (userExist)
+    return res.status(400).json({
+      error: true,
+      message: 'username already in use',
+    });
 
   //check if email is already in use
   userExist = await User.findOneBy({ email });
-  if (userExist) return res.status(400).json({ message: 'email already in use', status: 'error' });
+  if (userExist)
+    return res.status(400).json({
+      error: true,
+      message: 'email already in use',
+    });
 
   //hash password
   const hashPass = await hashPassword(password);
 
-  const user = new User();
-  // const user = await User.create({
-  user.username = username;
-  user.email = email;
-  user.password = hashPass;
-  // });
+  await User.create({
+    username,
+    email,
+    password: hashPass,
+  }).save();
 
-  await user.save();
+  res.status(201).json({
+    status: true,
+    message: 'signup successful',
+  });
+};
 
-  res.status(201).json({ status: true, message: 'signup successful', data: null });
+/**
+ * @route POST /api/v1/auth/login
+ * @desc - signin user with username and password
+ * @acces Public
+ */
+export const loginUser: RequestHandler = async (req, res) => {
+  const { username, password } = req.body as UserDoc;
+
+  //check if user exist
+  const user = (await User.findOneBy({ username })) as UserDocument;
+
+  if (!user)
+    return res.status(422).json({
+      error: true,
+      message: 'username or password is incorrect',
+    });
+
+  //check if password is correct
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch)
+    return res.status(400).json({
+      error: true,
+      message: 'email or password is incorrect',
+    });
+
+  const token = getToken(user);
+
+  res.json({
+    status: true,
+    message: 'login successful',
+    data: token,
+  });
 };
