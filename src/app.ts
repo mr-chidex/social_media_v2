@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import config from './config';
+import { error } from './middlewares/logger';
 
 const app: Application = express();
 const apiVersion = config.API_VERSION || 'v1';
@@ -14,5 +15,8 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(helmet());
 app.disable('x-powered-by');
+
+// error handler
+app.use(error);
 
 export default app;

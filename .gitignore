@@ -1,4 +1,7 @@
 node_modules
 .env
 coverage
+auth.middleware.ts
+libs
+*.log
 dist
