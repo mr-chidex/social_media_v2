@@ -16,3 +16,10 @@ export const ValidateAuth = (userData: UserDoc) => {
     email: Joi.string().required().email().normalize(),
   }).validate(userData);
 };
+
+export const ValidateUserUpdate = (userData: UserDoc) => {
+  return Joi.object({
+    username: Joi.string().min(3).trim().required(),
+    email: Joi.string().required().email().normalize(),
+  }).validate(userData);
+};

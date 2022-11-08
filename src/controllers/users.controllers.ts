@@ -3,6 +3,7 @@ import { RequestHandler } from 'express';
 import { User } from '../entities/User';
 import { IRequest, UserDoc, UserDocument } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
+import { ValidateUserUpdate } from '../utils/user.validators';
 
 /**
  *
@@ -29,14 +30,23 @@ export const getUsers: RequestHandler = async (_, res) => {
 export const updateUser: RequestHandler = async (req: IRequest, res) => {
   const userId = req.user?.id;
 
-  const { username, email } = req.body as UserDoc;
+  const { error, value } = ValidateUserUpdate(req.body as UserDoc);
+
+  if (error)
+    return res.status(422).json({
+      error: true,
+      message: error.details[0].message,
+    });
+
+  const { username, email } = value as UserDoc;
 
   const user = (await User.findOneBy({
     id: userId,
   })) as UserDocument;
-  console.log(username);
+
   if (user.username !== username) {
     const isExist = await User.findOneBy({ username });
+
     if (isExist)
       return res.status(400).json({
         error: true,
@@ -84,7 +94,7 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
     };
   }
 
-  // await user.save();
+  await user.save();
 
-  res.json(user);
+  res.json({ status: true, message: 'updated successfully', data: user });
 };
