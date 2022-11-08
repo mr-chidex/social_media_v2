@@ -18,7 +18,7 @@ export const getUsers: RequestHandler = async (_, res) => {
     },
   });
 
-  res.json({ status: true, message: 'success', data: users });
+  res.json({ success: true, message: 'success', data: users });
 };
 
 /**
@@ -96,5 +96,21 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
 
   await user.save();
 
-  res.json({ status: true, message: 'updated successfully', data: user });
+  res.json({ success: true, message: 'updated successfully', data: user });
+};
+
+/**
+ *
+ * @route GET /api/v1/users/profile
+ * @desc - see user profile
+ * @acces Private
+ */
+export const getProfile: RequestHandler = async (req: IRequest, res) => {
+  const userId = req.user?.id;
+
+  const user = await User.findOneBy({ id: userId });
+
+  if (!user) return res.status(400).json({ error: true, message: ' user does not exist' });
+
+  res.json({ success: true, message: 'success', data: user });
 };

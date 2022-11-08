@@ -51,7 +51,7 @@ export const registerUser: RequestHandler = async (req, res) => {
   }).save();
 
   res.status(201).json({
-    status: true,
+    success: true,
     message: 'signup successful',
   });
 };
@@ -85,7 +85,7 @@ export const loginUser: RequestHandler = async (req, res) => {
   const token = getToken(user);
 
   res.json({
-    status: true,
+    success: true,
     message: 'login successful',
     data: token,
   });

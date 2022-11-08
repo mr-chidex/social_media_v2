@@ -1,7 +1,7 @@
 import expressPromise from 'express-promise-router';
 const router = expressPromise();
 
-import { getUsers, updateUser } from '../controllers';
+import { getProfile, getUsers, updateUser } from '../controllers';
 import { uploads } from '../middlewares';
 import { authUser } from '../middlewares/auth.middleware';
 
@@ -16,5 +16,7 @@ router
     ]),
     updateUser,
   );
+
+router.route('/profile').get(authUser, getProfile);
 
 export const usersRoutes = router;
