@@ -30,7 +30,7 @@ export const authUser: RequestHandler = async (req: Request | any, res, next) =>
     });
 
     if (!user) {
-      res.status(401).json({
+      return res.status(401).json({
         error: true,
         message: 'Unauthorized access: User does not exist',
       });
@@ -69,7 +69,7 @@ export const authAdmin: RequestHandler = async (req: Request | any, res, next) =
     })) as UserDocument;
 
     if (!user) {
-      res.status(401).json({ error: true, message: 'Unauthorized access: User does not exist' });
+      return res.status(401).json({ error: true, message: 'Unauthorized access: User does not exist' });
     }
 
     req.user = user;

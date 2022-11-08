@@ -114,3 +114,25 @@ export const getProfile: RequestHandler = async (req: IRequest, res) => {
 
   res.json({ success: true, message: 'success', data: user });
 };
+
+/**
+ *
+ * @route DELETE /api/v1/users
+ * @desc - delete user account
+ * @acces Private
+ */
+export const deleteUser: RequestHandler = async (req: IRequest, res) => {
+  const userId = req.user?.id;
+
+  const user = await User.findOneBy({ id: userId });
+
+  if (!user) return res.status(400).json({ error: true, message: ' user does not exist' });
+
+  //destroy images if exist
+  user.profilePic?.id && (await cloudinary.v2.uploader.destroy(user.profilePic.id));
+  user.coverPic?.id && (await cloudinary.v2.uploader.destroy(user.coverPic.id));
+
+  await user.remove();
+
+  res.status(200).json({ success: true, message: 'user deleted', data: user });
+};
