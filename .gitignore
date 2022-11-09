@@ -3,6 +3,5 @@ node_modules
 coverage
 *.log
 dist
-posts.route.ts
 1667816168842-M.js
 rest.http

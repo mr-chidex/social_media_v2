@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 
 import { User } from '../entities/User';
-import { IRequest, UserDoc, UserDocument } from '../libs/types';
+import { IRequest, UserDoc } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
 import { ValidateUserUpdate } from '../utils/user.validators';
 
@@ -28,7 +28,7 @@ export const getUsers: RequestHandler = async (_, res) => {
  * @acces Private
  */
 export const updateUser: RequestHandler = async (req: IRequest, res) => {
-  const userId = req.user?.id;
+  const user = req.user as User;
 
   const { error, value } = ValidateUserUpdate(req.body as UserDoc);
 
@@ -39,10 +39,6 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
     });
 
   const { username, email, biography } = value as UserDoc;
-
-  const user = (await User.findOneBy({
-    id: userId,
-  })) as UserDocument;
 
   if (user.username !== username) {
     const isExist = await User.findOneBy({ username });

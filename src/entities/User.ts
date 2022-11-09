@@ -54,12 +54,6 @@ export class User extends BaseEntity {
   @ManyToOne(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
   followings_id: User;
 
-  // @OneToMany(() => Following, (following) => following.user)
-  // followings: Following[];
-
-  // @OneToMany(() => Follower, (follower) => follower.user)
-  // followers: Follower[];
-
   // @ManyToMany(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
   // @JoinTable()
   // followers: User[];
