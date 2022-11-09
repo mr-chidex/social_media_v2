@@ -3,7 +3,6 @@ import { Post } from '../entities/Post';
 import { User } from '../entities/User';
 
 import { Image, IRequest, PostDoc } from '../libs/types';
-// import { Post, User, ValidatePost } from "../models";
 import cloudinary from '../utils/cloudinary';
 import { ValidatePost } from '../utils/post.validator';
 const folder = 'image/socialMedia';
@@ -163,4 +162,91 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
   }
 
   res.json({ message: 'post updated' });
+};
+
+/**
+ *
+ * @route DELETE /api/v1/posts/:postId
+ * @desc - delete post
+ * @acces Private
+ */
+export const deletePost: RequestHandler = async (req: IRequest, res) => {
+  const { postId } = req.params;
+  const userId = req.user?.id;
+  const isAdmin = req.user?.isAdmin;
+
+  let post: Post | null;
+
+  if (isAdmin) {
+    //admin deleting post
+    post = await Post.findOne({ where: { id: postId } });
+  } else {
+    // user deleting post
+    post = await Post.findOne({
+      relations: ['user'],
+      where: {
+        id: postId,
+        user: {
+          id: userId,
+        },
+      },
+    });
+  }
+
+  if (!post) return res.status(400).json({ error: true, message: ' post does not exist' });
+
+  //delete image
+  post.image?.id && (await cloudinary.v2.uploader.destroy(post.image?.id));
+
+  await post.remove();
+
+  res.json({ success: true, message: 'post successfully deleted' });
+};
+
+/**
+ *
+ * @route GET /api/v1/posts/timeline
+ * @desc - get post for user timeline
+ * @acces Private
+ */
+export const getTimelinePosts: RequestHandler = async (req: IRequest, res) => {
+  const userId = req.user?.id;
+
+  const userwithRelations = await User.findOne({ where: { id: userId }, relations: ['followings'] });
+  if (!userwithRelations) return res.status(400).json({ message: 'user not found' });
+
+  let userPosts = await Post.find({
+    relations: ['user'],
+    where: {
+      user: {
+        id: userId,
+      },
+    },
+  });
+
+  await Promise.all(
+    userwithRelations.followings?.map(async (userFollowed) => {
+      const post = await Post.find({
+        relations: ['user'],
+        where: {
+          user: {
+            id: userFollowed.id,
+          },
+        },
+        select: {
+          user: {
+            username: true,
+            id: true,
+            profilePic: {
+              url: true,
+            },
+          },
+        },
+      });
+
+      userPosts = [...userPosts, ...post];
+    }),
+  );
+
+  res.json({ success: true, message: 'success', data: userPosts });
 };

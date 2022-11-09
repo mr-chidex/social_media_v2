@@ -1,7 +1,5 @@
 import { Request } from 'express';
 
-import { User } from '../entities/User';
-
 export interface UserDoc {
   id: string;
   username: string;
@@ -15,10 +13,6 @@ export interface UserDoc {
 
 export interface PostDoc {
   content: string;
-  image?: { url: string; id: string };
-  likes: [];
-  user: string;
-  comments: [];
 }
 
 export interface Image {
@@ -29,5 +23,3 @@ export interface Image {
 export interface IRequest extends Request {
   user?: { id: string; isAdmin: boolean };
 }
-
-export type UserDocument = UserDoc & User;

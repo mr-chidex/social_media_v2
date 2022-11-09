@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 
-import { UserDoc, UserDocument } from '../libs/types';
+import { UserDoc } from '../libs/types';
 import { ValidateUser } from '../utils/user.validators';
 import { User } from '../entities/User';
 import hashPassword from '../utils/hashPassword';
@@ -65,7 +65,7 @@ export const loginUser: RequestHandler = async (req, res) => {
   const { username, password } = req.body as UserDoc;
 
   //check if user exist
-  const user = (await User.findOneBy({ username })) as UserDocument;
+  const user = await User.findOneBy({ username });
 
   if (!user)
     return res.status(422).json({

@@ -3,7 +3,7 @@ import JWT from 'jsonwebtoken';
 import config from '../config';
 import { User } from '../entities/User';
 
-import { UserDoc, UserDocument } from '../libs/types';
+import { UserDoc } from '../libs/types';
 
 export const authUser: RequestHandler = async (req: Request | any, res, next) => {
   const { authorization } = req.headers;
@@ -64,9 +64,9 @@ export const authAdmin: RequestHandler = async (req: Request | any, res, next) =
   try {
     const decodeToken = JWT.verify(token, process.env.SECRET_KEY as string);
 
-    const user = (await User.findOneBy({
+    const user = await User.findOneBy({
       id: (decodeToken as UserDoc).id,
-    })) as UserDocument;
+    });
 
     if (!user) {
       return res.status(401).json({ error: true, message: 'Unauthorized access: User does not exist' });
