@@ -10,10 +10,7 @@ export interface UserDoc {
   profilePic?: { url: string; id: string };
   coverPic?: { url: string; id: string };
   isAdmin?: boolean;
-  followers?: [];
-  following?: [];
   biography?: string;
-  likes?: [];
 }
 
 export interface PostDoc {

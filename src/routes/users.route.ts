@@ -1,7 +1,7 @@
 import expressPromise from 'express-promise-router';
 const router = expressPromise();
 
-import { deleteUser, followAUser, getProfile, getUsers, updateUser } from '../controllers';
+import { deleteUser, followAUser, getProfile, getUsers, unfollowAUser, updateUser } from '../controllers';
 import { uploads } from '../middlewares';
 import { authUser } from '../middlewares/auth.middleware';
 
@@ -20,5 +20,6 @@ router
 
 router.route('/profile').get(authUser, getProfile);
 router.route('/follow').patch(authUser, followAUser);
+router.route('/unfollow').patch(authUser, unfollowAUser);
 
 export const usersRoutes = router;

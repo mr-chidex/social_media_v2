@@ -192,7 +192,7 @@ export const followAUser: RequestHandler = async (req: IRequest, res) => {
   const followUser = await User.findOneBy({ id: followId });
 
   // Get the details of the logged in user.
-  const loggedInUser = await User.findOne({ where: { id: currUserId } });
+  const loggedInUser = await User.findOneBy({ id: currUserId });
 
   //check if user is already follwed by logged in user
   const isFollowed = followUserWithRel.followers.find((user) => user.id === currUserId);
@@ -209,5 +209,74 @@ export const followAUser: RequestHandler = async (req: IRequest, res) => {
   await loggedInUserWithRel.save();
   await followUserWithRel.save();
 
-  res.json({ success: true, message: 'usee successfully followed', loggedInUserWithRel, followUserWithRel });
+  res.json({
+    success: true,
+    message: 'user successfully followed',
+    data: loggedInUserWithRel,
+  });
+};
+
+/**
+ *
+ * @route PATCH /api/v1/users/unfollow?userId=id
+ * @desc - unfollow a user
+ * @acces Private
+ */
+export const unfollowAUser: RequestHandler = async (req: IRequest, res) => {
+  //user to unfollow id
+  const followId = req.query?.userId as string;
+
+  //current user id
+  const currUserId = req.user?.id;
+
+  if (!followId)
+    return res.status(400).json({
+      error: true,
+      message: 'invalid id provided',
+    });
+
+  if (followId === currUserId)
+    return res.status(403).json({
+      error: true,
+      message: 'cannot unfollow yourself',
+    });
+
+  //get user to unfollow  with relations
+  const followUserWithRel = await User.findOne({
+    where: { id: followId },
+    relations: ['followers', 'followings'],
+  });
+
+  if (!followUserWithRel)
+    return res.status(400).json({ error: true, message: 'user about to unfollow does not exist' });
+
+  //get logged in user with relations
+  const loggedInUserWithRel = await User.findOne({
+    where: { id: currUserId },
+    relations: ['followers', 'followings'],
+  });
+
+  if (!loggedInUserWithRel)
+    return res.status(400).json({
+      error: true,
+      message: 'user not found',
+    });
+
+  // check if loggedin user is following user about to unfollow
+  const isFollowing = followUserWithRel.followers.find((user) => user.id === currUserId);
+
+  if (!isFollowing) return res.status(400).json({ error: true, message: "can't unfollow a user you're not following" });
+
+  //update followers and followings
+  loggedInUserWithRel.followings = loggedInUserWithRel.followings.filter((user) => user.id !== followId);
+  followUserWithRel.followers = followUserWithRel.followers.filter((user) => user.id !== currUserId);
+
+  await loggedInUserWithRel.save();
+  await followUserWithRel.save();
+
+  res.json({
+    success: true,
+    message: 'user successfully unfollowed',
+    data: loggedInUserWithRel,
+  });
 };
