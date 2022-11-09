@@ -20,6 +20,7 @@ export const ValidateAuth = (userData: UserDoc) => {
 export const ValidateUserUpdate = (userData: UserDoc) => {
   return Joi.object({
     username: Joi.string().min(3).max(20).trim().required(),
+    biography: Joi.optional(),
     email: Joi.string().required().email().normalize(),
   }).validate(userData);
 };

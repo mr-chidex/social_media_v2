@@ -1,6 +1,4 @@
 import { RequestHandler } from 'express';
-// import { Follower } from '../entities/Followers';
-// import { Following } from '../entities/Followings';
 
 import { User } from '../entities/User';
 import { IRequest, UserDoc, UserDocument } from '../libs/types';
@@ -40,7 +38,7 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
       message: error.details[0].message,
     });
 
-  const { username, email } = value as UserDoc;
+  const { username, email, biography } = value as UserDoc;
 
   const user = (await User.findOneBy({
     id: userId,
@@ -67,6 +65,7 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
 
   user.username = username;
   user.email = email;
+  user.biography = biography || email;
 
   const { profilePic, coverPic } = req.files as any;
 
@@ -114,6 +113,7 @@ export const getProfile: RequestHandler = async (req: IRequest, res) => {
     where: {
       id: userId,
     },
+    relations: ['followers', 'followings'],
   });
 
   if (!user) return res.status(400).json({ error: true, message: ' user does not exist' });
@@ -150,34 +150,64 @@ export const deleteUser: RequestHandler = async (req: IRequest, res) => {
  * @acces Private
  */
 export const followAUser: RequestHandler = async (req: IRequest, res) => {
-  const userId = req.query?.userId as string; //user to follow id
-  const curUserId = req.user?.id; //current user id
-  if (!userId)
+  //user to follow id
+  const followId = req.query?.userId as string;
+
+  //current user id
+  const currUserId = req.user?.id;
+
+  if (!followId)
     return res.status(400).json({
       error: true,
       message: 'invalid id provided',
     });
 
-  if (userId === curUserId)
+  if (followId === currUserId)
     return res.status(403).json({
       error: true,
       message: 'cannot follow yourself',
     });
 
-  const user = await User.findOne({
-    where: { id: userId },
-  });
-  if (!user) return res.status(400).json({ error: true, message: 'user about to follow does not exist' });
-
-  const currentUser = await User.findOne({
-    where: { id: curUserId },
+  //get user to follow  with relations
+  const followUserWithRel = await User.findOne({
+    where: { id: followId },
+    relations: ['followers', 'followings'],
   });
 
-  if (!currentUser)
+  if (!followUserWithRel) return res.status(400).json({ error: true, message: 'user about to follow does not exist' });
+
+  //get logged in user with relations
+  const loggedInUserWithRel = await User.findOne({
+    where: { id: currUserId },
+    relations: ['followers', 'followings'],
+  });
+
+  if (!loggedInUserWithRel)
     return res.status(400).json({
       error: true,
       message: 'user not found',
     });
 
-  res.json({ message: 'user followed', user, currentUser });
+  // Get the details of the user to be followed.
+  const followUser = await User.findOneBy({ id: followId });
+
+  // Get the details of the logged in user.
+  const loggedInUser = await User.findOne({ where: { id: currUserId } });
+
+  //check if user is already follwed by logged in user
+  const isFollowed = followUserWithRel.followers.find((user) => user.id === currUserId);
+
+  if (isFollowed)
+    return res.status(403).json({
+      error: true,
+      message: 'user already followed by you.',
+    });
+
+  loggedInUserWithRel.followings = [followUser!, ...loggedInUserWithRel.followings];
+  followUserWithRel.followers = [loggedInUser!, ...followUserWithRel.followers];
+
+  await loggedInUserWithRel.save();
+  await followUserWithRel.save();
+
+  res.json({ success: true, message: 'usee successfully followed', loggedInUserWithRel, followUserWithRel });
 };
