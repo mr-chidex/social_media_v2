@@ -3,11 +3,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  ManyToOne,
   OneToMany,
   UpdateDateColumn,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+
+import { Like } from './Like';
+import { Post } from './Post';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -39,17 +42,37 @@ export class User extends BaseEntity {
   })
   isAdmin: boolean;
 
-  @ManyToOne((type) => User, (user) => user.followers)
-  followers_parent: User;
-
-  @OneToMany((type) => User, (user) => user.followers_parent)
+  @OneToMany(() => User, (user) => user.followers_id, { cascade: true })
   followers: User[];
 
-  @ManyToOne((type) => User, (user) => user.following)
-  follow_parent: User;
+  @ManyToOne(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
+  followers_id: User;
 
-  @OneToMany((type) => User, (user) => user.follow_parent)
-  following: User[];
+  @OneToMany(() => User, (user) => user.followings_id, { cascade: true })
+  followings: User[];
+
+  @ManyToOne(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
+  followings_id: User;
+
+  // @OneToMany(() => Following, (following) => following.user)
+  // followings: Following[];
+
+  // @ManyToMany(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
+  // @JoinTable()
+  // followers: User[];
+
+  // @ManyToMany(() => User, (user) => user.following, { onDelete: 'CASCADE' })
+  // @JoinTable()
+  // following: User[];
+
+  @Column({ type: 'text', default: '', nullable: true })
+  biography: string;
+
+  @OneToMany(() => Post, (post) => post.user, { cascade: true })
+  posts: Post[];
+
+  @OneToMany(() => Like, (like) => like.user, { cascade: true })
+  likes: Like[];
 
   @Column()
   @CreateDateColumn()

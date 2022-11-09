@@ -1,4 +1,6 @@
 import { RequestHandler } from 'express';
+// import { Follower } from '../entities/Followers';
+// import { Following } from '../entities/Followings';
 
 import { User } from '../entities/User';
 import { IRequest, UserDoc, UserDocument } from '../libs/types';
@@ -108,7 +110,11 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
 export const getProfile: RequestHandler = async (req: IRequest, res) => {
   const userId = req.user?.id;
 
-  const user = await User.findOneBy({ id: userId });
+  const user = await User.findOne({
+    where: {
+      id: userId,
+    },
+  });
 
   if (!user) return res.status(400).json({ error: true, message: ' user does not exist' });
 
@@ -135,4 +141,43 @@ export const deleteUser: RequestHandler = async (req: IRequest, res) => {
   await user.remove();
 
   res.status(200).json({ success: true, message: 'user deleted', data: user });
+};
+
+/**
+ *
+ * @route PATCH /api/v1/users/follow?userId=id
+ * @desc - follow a user
+ * @acces Private
+ */
+export const followAUser: RequestHandler = async (req: IRequest, res) => {
+  const userId = req.query?.userId as string; //user to follow id
+  const curUserId = req.user?.id; //current user id
+  if (!userId)
+    return res.status(400).json({
+      error: true,
+      message: 'invalid id provided',
+    });
+
+  if (userId === curUserId)
+    return res.status(403).json({
+      error: true,
+      message: 'cannot follow yourself',
+    });
+
+  const user = await User.findOne({
+    where: { id: userId },
+  });
+  if (!user) return res.status(400).json({ error: true, message: 'user about to follow does not exist' });
+
+  const currentUser = await User.findOne({
+    where: { id: curUserId },
+  });
+
+  if (!currentUser)
+    return res.status(400).json({
+      error: true,
+      message: 'user not found',
+    });
+
+  res.json({ message: 'user followed', user, currentUser });
 };

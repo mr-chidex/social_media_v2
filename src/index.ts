@@ -2,7 +2,7 @@ import app from './app';
 import config from './config';
 import { AppDataSource } from './data-source';
 
-const PORT = config.PORT || 8000;
+const PORT = config.PORT || 9000;
 
 AppDataSource.initialize()
   .then(() => {

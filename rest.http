@@ -3,18 +3,17 @@ POST http://localhost:8000/api/v1/auth/register
 content-type: application/json
 
 {
-    "username": "mrrchidex",
-    "email":"mrrchidex@email.com",
+    "username": "rexxy",
+    "email":"rexxy@email.com",
     "password":"1234"
 }
 
 ### Signin a new user
-POST http://localhost:8000/api/v1/auth/login
+POST http://localhost:9000/api/v1/auth/login
 content-type: application/json
 
 {
-    "username": "mrrchidex",
-    "email":"mrrchidex@email.com",
+    "username": "mrchidex",
     "password":"1234"
 }
 
