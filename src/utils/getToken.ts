@@ -15,6 +15,8 @@ export default (user: UserDoc) => {
       coverPic: user.coverPic,
       follow: user.following,
       followers: user.followers,
+      biography: user.biography,
+      likes: user.likes,
     },
     config.SECRET_KEY as string,
     { expiresIn: '48h' },

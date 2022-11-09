@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { User } from '../entities/User';
 
 export interface UserDoc {
-  id?: string;
+  id: string;
   username: string;
   email: string;
   password: string;
@@ -12,6 +12,8 @@ export interface UserDoc {
   isAdmin?: boolean;
   followers?: [];
   following?: [];
+  biography?: string;
+  likes?: [];
 }
 
 export interface PostDoc {
@@ -19,6 +21,7 @@ export interface PostDoc {
   image?: { url: string; id: string };
   likes: [];
   user: string;
+  comments: [];
 }
 
 export interface Image {
