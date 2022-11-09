@@ -4,12 +4,12 @@ content-type: application/json
 
 {
     "username": "rexxy",
-    "email":"rexxy@email.com",
+    "email":"mrchidex@email.com",
     "password":"1234"
 }
 
 ### Signin a new user
-POST http://localhost:9000/api/v1/auth/login
+POST http://localhost:8000/api/v1/auth/login
 content-type: application/json
 
 {
@@ -21,10 +21,3 @@ content-type: application/json
 GET http://localhost:8000/api/v1/users
 
 ### update a user
-PATCH  http://localhost:8000/api/v1/users
-Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njc4NTc1MDU5MjgsImlzcyI6Ik1yLUNoaWRleCIsImlkIjoiMTcyZmI4NzQtMzg2Ny00YjY5LWJiM2UtZjAwYTI1NzZjYmI3IiwidXNlcm5hbWUiOiJtcmNoaWRleCIsImVtYWlsIjoibXJjaGlkZXhAZW1haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsInByb2ZpbGVQaWMiOm51bGwsImNvdmVyUGljIjpudWxsLCJleHAiOjE2Njc4NTc2Nzg3Mjh9.iqO9Nkj81AkC1A48EoUDQMylJ_OGIYrfOLHCdC15g0A"
-
-{
-    "username": "mrchidex",
-    "email":"mrchidex@email.com",
-}

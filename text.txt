@@ -1,3 +1,6 @@
+## Changing a table's name
+### add timestamp e.g 1667816168842
+
 const { MigrationInterface, QueryRunner } = require('typeorm');
 
 module.exports = class altname1667816168842 {

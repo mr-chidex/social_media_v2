@@ -3,11 +3,11 @@ const router = expressPromise();
 
 import { deleteUser, followAUser, getProfile, getUsers, unfollowAUser, updateUser } from '../controllers';
 import { uploads } from '../middlewares';
-import { authUser } from '../middlewares/auth.middleware';
+import { authAdmin, authUser } from '../middlewares/auth.middleware';
 
 router
   .route('/')
-  .get(getUsers)
+  .get(authAdmin, getUsers)
   .patch(
     authUser,
     uploads.fields([
