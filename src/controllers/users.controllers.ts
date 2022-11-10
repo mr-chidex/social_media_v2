@@ -62,7 +62,7 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
 
   user.username = username;
   user.email = email;
-  user.biography = biography || email;
+  user.biography = biography || user.biography;
 
   const { profilePic, coverPic } = req.files as any;
 
@@ -164,6 +164,7 @@ export const followAUser: RequestHandler = async (req: IRequest, res) => {
 
   //current user id
   const currUserId = req.user?.id;
+  const loggedInUser = req.user as User;
 
   if (!followId)
     return res.status(400).json({
@@ -199,9 +200,6 @@ export const followAUser: RequestHandler = async (req: IRequest, res) => {
 
   // Get the details of the user to be followed.
   const followUser = await User.findOneBy({ id: followId });
-
-  // Get the details of the logged in user.
-  const loggedInUser = await User.findOneBy({ id: currUserId });
 
   //check if user is already follwed by logged in user
   const isFollowed = followUserWithRel.followers.find((user) => user.id === currUserId);
