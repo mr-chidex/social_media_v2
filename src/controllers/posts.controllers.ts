@@ -1,10 +1,11 @@
 import { RequestHandler } from 'express';
 
-import { Post } from '../entities/Post';
+import { Post, PostType } from '../entities/Post';
 import { User } from '../entities/User';
 import { Image, IRequest, PostDoc } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
 import { ValidatePost } from '../utils/post.validator';
+import userSelect from '../utils/userSelect.constants';
 const folder = 'image/socialMedia';
 
 /**
@@ -60,15 +61,32 @@ export const getPosts: RequestHandler = async (_, res) => {
     order: {
       createdAt: 'DESC',
     },
-    relations: ['user', 'likes'],
-    select: {
+    relations: ['user', 'likes', 'comments', 'comments.user', 'comments.likes'],
+    where: { type: PostType.POST },
+    cache: true,
+  });
+
+  res.json({ success: true, message: 'success', data: posts });
+};
+
+/**
+ *
+ * @route GET /api/v1/posts/user
+ * @desc - get all post by a user
+ * @acces Private
+ */
+export const getPostsByUser: RequestHandler = async (req: IRequest, res) => {
+  const userId = req.user?.id;
+
+  const posts = await Post.find({
+    order: {
+      createdAt: 'DESC',
+    },
+    relations: ['user', 'likes', 'comments', 'comments.user', 'comments.likes'],
+    where: {
+      type: PostType.POST,
       user: {
-        username: true,
-        id: true,
-        createdAt: true,
-        profilePic: {
-          url: true,
-        },
+        id: userId,
       },
     },
     cache: true,
@@ -127,7 +145,6 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
   const { content } = value as PostDoc;
 
   const post = await Post.findOne({
-    relations: ['user'],
     where: {
       id: postId,
       user: {
@@ -184,7 +201,6 @@ export const deletePost: RequestHandler = async (req: IRequest, res) => {
   } else {
     // user deleting post
     post = await Post.findOne({
-      relations: ['user'],
       where: {
         id: postId,
         user: {
@@ -217,8 +233,9 @@ export const getTimelinePosts: RequestHandler = async (req: IRequest, res) => {
   if (!userwithRelations) return res.status(400).json({ message: 'user not found' });
 
   let userPosts = await Post.find({
-    relations: ['user'],
+    relations: ['user', 'likes', 'comments', 'comments.user', 'comments.likes'],
     where: {
+      type: PostType.POST,
       user: {
         id: userId,
       },
