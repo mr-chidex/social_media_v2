@@ -58,7 +58,7 @@ export const createPost: RequestHandler = async (req: IRequest, res) => {
 export const getPosts: RequestHandler = async (_, res) => {
   const posts = await Post.find({
     order: {
-      id: 'ASC',
+      createdAt: 'DESC',
     },
     relations: ['user', 'likes'],
     select: {
