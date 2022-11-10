@@ -78,7 +78,7 @@ export const loginUser: RequestHandler = async (req, res) => {
   if (!isMatch)
     return res.status(400).json({
       error: true,
-      message: 'email or password is incorrect',
+      message: 'username or password is incorrect',
     });
 
   const token = getToken(user);

@@ -12,10 +12,22 @@ import {
 import { Like } from './Like';
 import { User } from './User';
 
+export enum PostType {
+  POST = 'post',
+  COMMENT = 'comment',
+}
+
 @Entity('posts')
 export class Post extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({
+    type: 'enum',
+    enum: PostType,
+    default: PostType.POST,
+  })
+  type: PostType;
 
   @Column('simple-json', { nullable: true })
   image: { url: string; id: string };

@@ -71,6 +71,7 @@ export const getPosts: RequestHandler = async (_, res) => {
         },
       },
     },
+    cache: true,
   });
 
   res.json({ success: true, message: 'success', data: posts });

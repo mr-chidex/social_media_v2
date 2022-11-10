@@ -14,4 +14,7 @@ export const AppDataSource = new DataSource({
   entities: [__dirname + '/entities/*{.js,.ts}'],
   migrations: [__dirname + '/migrations/*.js'],
   subscribers: [],
+  cache: {
+    duration: 10000, //10 secs
+  },
 });

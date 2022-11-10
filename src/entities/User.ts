@@ -42,25 +42,25 @@ export class User extends BaseEntity {
   })
   isAdmin: boolean;
 
-  @OneToMany(() => User, (user) => user.followers_id, { cascade: true })
+  @OneToMany(() => User, (user) => user.follower, { cascade: true })
   followers: User[];
 
   @ManyToOne(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
-  followers_id: User;
+  follower: User;
 
-  @OneToMany(() => User, (user) => user.followings_id, { cascade: true })
+  @OneToMany(() => User, (user) => user.following, { cascade: true })
   followings: User[];
 
   @ManyToOne(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
-  followings_id: User;
+  following: User;
 
   // @ManyToMany(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
   // @JoinTable()
   // followers: User[];
 
-  // @ManyToMany(() => User, (user) => user.following, { onDelete: 'CASCADE' })
+  // @ManyToMany(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
   // @JoinTable()
-  // following: User[];
+  // followings: User[];
 
   @Column({ type: 'text', default: '', nullable: true })
   biography: string;

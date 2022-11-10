@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import bcrypt from 'bcrypt';
 
 import { User } from '../entities/User';
 import { IRequest, UserDoc } from '../libs/types';
@@ -124,11 +125,23 @@ export const getProfile: RequestHandler = async (req: IRequest, res) => {
  * @acces Private
  */
 export const deleteUser: RequestHandler = async (req: IRequest, res) => {
-  const userId = req.user?.id;
+  const user = req.user as User;
 
-  const user = await User.findOneBy({ id: userId });
+  const { password } = req.body as { password: string };
 
-  if (!user) return res.status(400).json({ error: true, message: ' user does not exist' });
+  if (!password)
+    return res.status(400).json({
+      error: true,
+      message: 'password must be provided',
+    });
+
+  //check if password is correct
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch)
+    return res.status(400).json({
+      error: true,
+      message: 'password is incorrect',
+    });
 
   //destroy images if exist
   user.profilePic?.id && (await cloudinary.v2.uploader.destroy(user.profilePic.id));
