@@ -101,7 +101,7 @@ export const getPost: RequestHandler = async (req, res) => {
     },
   });
 
-  if (!post) return res.status(400).json({ message: ' post does not exist' });
+  if (!post) return res.status(404).json({ message: 'post does not exist' });
 
   res.json({ success: true, message: 'success', data: post });
 };
@@ -136,7 +136,7 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
     },
   });
 
-  if (!post) return res.status(400).json({ message: 'post does not exist' });
+  if (!post) return res.status(404).json({ message: 'post does not exist' });
 
   post.content = content;
 
@@ -194,7 +194,7 @@ export const deletePost: RequestHandler = async (req: IRequest, res) => {
     });
   }
 
-  if (!post) return res.status(400).json({ error: true, message: ' post does not exist' });
+  if (!post) return res.status(404).json({ error: true, message: 'post does not exist' });
 
   //delete image
   post.image?.id && (await cloudinary.v2.uploader.destroy(post.image?.id));
