@@ -108,7 +108,7 @@ export const getPost: RequestHandler = async (req, res) => {
 
 /**
  *
- * @route PUT /api/v1/posts/:postId
+ * @route PATCH /api/v1/posts/:postId
  * @desc - update post
  * @acces Private
  */
@@ -162,7 +162,7 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
     }
   }
 
-  res.json({ message: 'post updated' });
+  res.json({ success: true, message: 'post updated' });
 };
 
 /**
