@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
+
 import { Post } from '../entities/Post';
 import { User } from '../entities/User';
-
 import { Image, IRequest, PostDoc } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
 import { ValidatePost } from '../utils/post.validator';
@@ -60,7 +60,7 @@ export const getPosts: RequestHandler = async (_, res) => {
     order: {
       id: 'ASC',
     },
-    relations: ['user'],
+    relations: ['user', 'likes'],
     select: {
       user: {
         username: true,
@@ -88,7 +88,7 @@ export const getPost: RequestHandler = async (req, res) => {
 
   const post = await Post.findOne({
     where: { id: postId },
-    relations: ['user'],
+    relations: ['user', 'likes'],
     select: {
       user: {
         username: true,
@@ -228,7 +228,7 @@ export const getTimelinePosts: RequestHandler = async (req: IRequest, res) => {
   await Promise.all(
     userwithRelations.followings?.map(async (userFollowed) => {
       const post = await Post.find({
-        relations: ['user'],
+        relations: ['user', 'likes'],
         where: {
           user: {
             id: userFollowed.id,

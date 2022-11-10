@@ -10,10 +10,6 @@ router.route('/').post(authUser, uploads.single('image'), createPost).get(getPos
 
 router.route('/timeline').get(authUser, getTimelinePosts);
 
-router
-  .route('/:postId')
-  .get(authUser, getPost)
-  .patch(authUser, uploads.single('image'), updatePost)
-  .delete(authUser, deletePost);
+router.route('/:postId').get(getPost).patch(authUser, uploads.single('image'), updatePost).delete(authUser, deletePost);
 
 export const postsRoutes = router;
