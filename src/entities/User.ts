@@ -6,7 +6,8 @@ import {
   OneToMany,
   UpdateDateColumn,
   CreateDateColumn,
-  ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { Like } from './Like';
@@ -42,25 +43,13 @@ export class User extends BaseEntity {
   })
   isAdmin: boolean;
 
-  @OneToMany(() => User, (user) => user.follower, { cascade: true })
+  @ManyToMany(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
+  @JoinTable()
   followers: User[];
 
-  @ManyToOne(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
-  follower: User;
-
-  @OneToMany(() => User, (user) => user.following, { cascade: true })
+  @ManyToMany(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
+  @JoinTable()
   followings: User[];
-
-  @ManyToOne(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
-  following: User;
-
-  // @ManyToMany(() => User, (user) => user.followers, { onDelete: 'CASCADE' })
-  // @JoinTable()
-  // followers: User[];
-
-  // @ManyToMany(() => User, (user) => user.followings, { onDelete: 'CASCADE' })
-  // @JoinTable()
-  // followings: User[];
 
   @Column({ type: 'text', default: '', nullable: true })
   biography: string;

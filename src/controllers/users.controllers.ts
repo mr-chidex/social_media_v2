@@ -181,7 +181,7 @@ export const followAUser: RequestHandler = async (req: IRequest, res) => {
   //get user to follow  with relations
   const followUserWithRel = await User.findOne({
     where: { id: followId },
-    relations: ['followers', 'followings'],
+    relations: ['followers'],
   });
 
   if (!followUserWithRel) return res.status(400).json({ error: true, message: 'user about to follow does not exist' });
@@ -189,7 +189,7 @@ export const followAUser: RequestHandler = async (req: IRequest, res) => {
   //get logged in user with relations
   const loggedInUserWithRel = await User.findOne({
     where: { id: currUserId },
-    relations: ['followers', 'followings'],
+    relations: ['followings'],
   });
 
   if (!loggedInUserWithRel)
@@ -251,7 +251,7 @@ export const unfollowAUser: RequestHandler = async (req: IRequest, res) => {
   //get user to unfollow  with relations
   const followUserWithRel = await User.findOne({
     where: { id: followId },
-    relations: ['followers', 'followings'],
+    relations: ['followers'],
   });
 
   if (!followUserWithRel)
@@ -260,7 +260,7 @@ export const unfollowAUser: RequestHandler = async (req: IRequest, res) => {
   //get logged in user with relations
   const loggedInUserWithRel = await User.findOne({
     where: { id: currUserId },
-    relations: ['followers', 'followings'],
+    relations: ['followings'],
   });
 
   if (!loggedInUserWithRel)
