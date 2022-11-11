@@ -17,10 +17,10 @@ A Node JS service RESTful API. Social Media API
 ## Features
 
 - Signup and Signin
-- View user posts
-- View timeline
-- Delete and update your post
-- Update your account profile
+- View posts
+- View timeline post
+- Delete and update post
+- Update account
 - Follow and unfollow other users
 - like and comment on post
 - and more ...
