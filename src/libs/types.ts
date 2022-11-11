@@ -14,6 +14,7 @@ export interface UserDoc {
 export interface PostDoc {
   content: string;
   postId?: string;
+  commentId?: string;
 }
 
 export interface Image {

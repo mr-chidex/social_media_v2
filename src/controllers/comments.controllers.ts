@@ -4,7 +4,7 @@ import { Post, PostType } from '../entities/Post';
 import { User } from '../entities/User';
 import { Image, IRequest, PostDoc } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
-import { ValidatePost } from '../utils/post.validator';
+import { ValidateComment, ValidatePost } from '../utils/post.validator';
 const folder = 'image/socialMedia';
 
 /**
@@ -16,7 +16,7 @@ const folder = 'image/socialMedia';
 export const createComment: RequestHandler = async (req: IRequest, res) => {
   const user = req.user as User;
 
-  const { error, value } = ValidatePost(req.body as PostDoc);
+  const { error, value } = ValidateComment(req.body as PostDoc);
 
   if (error)
     return res.status(422).json({

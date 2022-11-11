@@ -1,6 +1,6 @@
 ## Social Media API V2
 
-A Node JS service RESTful API. Social Media ApI
+A Node JS service RESTful API. Social Media API
 
 ### Built With
 
@@ -22,23 +22,27 @@ A Node JS service RESTful API. Social Media ApI
 - Delete and update your post
 - Update your account profile
 - Follow and unfollow other users
-- and more to be implemented
+- like and comment on post
+- and more ...
+
+### Documentation
+
+Postman: [See documentation](https://documenter.getpostman.com/view/11724511/2s8YepsCxN)
 
 ### Clone this project
 
 ```
 git clone https://github.com/mr-chidex/social_media_v2.git
-```
-
-```
 cd social_media_v2
 ```
 
 ### Install dependencies
 
-```
-yarn install
-```
+Steps to run this project:
+
+1. Run `yarn install` command
+2. Run variables in `dev.env`
+3. Setup database settings inside `data-source.ts` file
 
 ### Running this project locally
 

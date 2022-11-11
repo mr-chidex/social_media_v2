@@ -131,6 +131,7 @@ export const getPost: RequestHandler = async (req, res) => {
  */
 export const updatePost: RequestHandler = async (req: IRequest, res) => {
   const user = req.user;
+  const postId = req.params.postId;
 
   const { error, value } = ValidatePost(req.body as PostDoc);
 
@@ -140,7 +141,7 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
       message: error.details[0].message,
     });
 
-  const { content, postId } = value as PostDoc;
+  const { content } = value as PostDoc;
 
   const post = await Post.findOne({
     where: {
