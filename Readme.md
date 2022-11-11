@@ -2,7 +2,7 @@
 
 A Node JS service RESTful API. Social Media API
 
-### Built With
+## Built With
 
 - Node.js
 - Postgres
@@ -14,7 +14,7 @@ A Node JS service RESTful API. Social Media API
 - TypeScript
 - Cloudinary
 
-### Features
+## Features
 
 - Signup and Signin
 - View user posts
@@ -25,18 +25,18 @@ A Node JS service RESTful API. Social Media API
 - like and comment on post
 - and more ...
 
-### Documentation
+## Documentation
 
 Postman: [See documentation](https://documenter.getpostman.com/view/11724511/2s8YepsCxN)
 
-### Clone this project
+## Clone this project
 
 ```
 git clone https://github.com/mr-chidex/social_media_v2.git
 cd social_media_v2
 ```
 
-### Install dependencies
+## Install dependencies
 
 Steps to run this project:
 
@@ -44,16 +44,16 @@ Steps to run this project:
 2. Run variables in `dev.env`
 3. Setup database settings inside `data-source.ts` file
 
-### Running this project locally
+## Running this project locally
 
 ```
 yarn dev
 ```
 
-### Show your support
+## Show your support
 
 Give a ⭐️ if you like this project!
 
-### Copyright
+## Copyright
 
 Copyright (c) mr-chidex
