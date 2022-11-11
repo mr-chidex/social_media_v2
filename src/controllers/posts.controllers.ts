@@ -5,7 +5,6 @@ import { User } from '../entities/User';
 import { Image, IRequest, PostDoc } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
 import { ValidatePost } from '../utils/post.validator';
-import userSelect from '../utils/userSelect.constants';
 const folder = 'image/socialMedia';
 
 /**
@@ -61,7 +60,7 @@ export const getPosts: RequestHandler = async (_, res) => {
     order: {
       createdAt: 'DESC',
     },
-    relations: ['user', 'likes', 'comments', 'comments.user', 'comments.likes'],
+    relations: ['user', 'likes', 'comments', 'comments.user', 'comments.likes', 'comments.comments'],
     where: { type: PostType.POST },
     cache: true,
   });
@@ -132,7 +131,6 @@ export const getPost: RequestHandler = async (req, res) => {
  */
 export const updatePost: RequestHandler = async (req: IRequest, res) => {
   const user = req.user;
-  const { postId } = req.params;
 
   const { error, value } = ValidatePost(req.body as PostDoc);
 
@@ -142,7 +140,7 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
       message: error.details[0].message,
     });
 
-  const { content } = value as PostDoc;
+  const { content, postId } = value as PostDoc;
 
   const post = await Post.findOne({
     where: {

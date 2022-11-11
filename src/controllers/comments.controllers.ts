@@ -15,7 +15,6 @@ const folder = 'image/socialMedia';
  */
 export const createComment: RequestHandler = async (req: IRequest, res) => {
   const user = req.user as User;
-  const postId = req.body.postId as string;
 
   const { error, value } = ValidatePost(req.body as PostDoc);
 
@@ -25,7 +24,7 @@ export const createComment: RequestHandler = async (req: IRequest, res) => {
       message: error.details[0].message,
     });
 
-  const { content } = value as PostDoc;
+  const { content, postId } = value as PostDoc;
 
   const post = await Post.findOneBy({ id: postId });
   if (!post)
@@ -90,7 +89,7 @@ export const getComments: RequestHandler = async (req, res) => {
  * @desc - update comment
  * @acces Private
  */
-export const updatePost: RequestHandler = async (req: IRequest, res) => {
+export const updateComment: RequestHandler = async (req: IRequest, res) => {
   const user = req.user;
   const { postId } = req.params;
 
@@ -147,6 +146,7 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
  * @route DELETE /api/v1/comments/:postId
  * @desc - delete comment
  * @acces Private
+ * @Note Deleting a post is same as deleting a comment. This action can be omitted if you want (can use delete post endpoint)
  */
 export const deleteComment: RequestHandler = async (req: IRequest, res) => {
   const { postId } = req.params;

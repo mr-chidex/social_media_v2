@@ -13,6 +13,7 @@ export interface UserDoc {
 
 export interface PostDoc {
   content: string;
+  postId?: string;
 }
 
 export interface Image {
