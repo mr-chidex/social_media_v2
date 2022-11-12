@@ -178,6 +178,8 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
     }
   }
 
+  await post.save();
+
   res.json({ success: true, message: 'post updated' });
 };
 
