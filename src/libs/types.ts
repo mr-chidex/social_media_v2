@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { User } from '../entities/User';
 
 export interface PostDoc {
   content: string;
@@ -11,5 +12,5 @@ export interface Image {
 }
 
 export interface IRequest extends Request {
-  user?: { id: string; isAdmin: boolean };
+  user?: User;
 }
