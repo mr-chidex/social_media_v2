@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 
 import { User } from '../entities/User';
-import { IRequest, UserDoc } from '../libs/types';
+import { IRequest } from '../libs/types';
 import cloudinary from '../utils/cloudinary';
 import { ValidateUserUpdate } from '../utils/user.validators';
 
@@ -31,7 +31,7 @@ export const getUsers: RequestHandler = async (_, res) => {
 export const updateUser: RequestHandler = async (req: IRequest, res) => {
   const user = req.user as User;
 
-  const { error, value } = ValidateUserUpdate(req.body as UserDoc);
+  const { error, value } = ValidateUserUpdate(req.body as User);
 
   if (error)
     return res.status(422).json({
@@ -39,7 +39,7 @@ export const updateUser: RequestHandler = async (req: IRequest, res) => {
       message: error.details[0].message,
     });
 
-  const { username, email, biography } = value as UserDoc;
+  const { username, email, biography } = value as User;
 
   if (user.username !== username) {
     const isExist = await User.findOneBy({ username });

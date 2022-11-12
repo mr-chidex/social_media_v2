@@ -1,8 +1,8 @@
 import JWT from 'jsonwebtoken';
 import config from '../config';
-import { UserDoc } from '../libs/types';
+import { User } from '../entities/User';
 
-export default (user: UserDoc) => {
+export default (user: User) => {
   return JWT.sign(
     {
       iat: Date.now(),

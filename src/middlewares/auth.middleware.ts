@@ -3,8 +3,6 @@ import JWT from 'jsonwebtoken';
 import config from '../config';
 import { User } from '../entities/User';
 
-import { UserDoc } from '../libs/types';
-
 export const authUser: RequestHandler = async (req: Request | any, res, next) => {
   const { authorization } = req.headers;
 
@@ -26,7 +24,7 @@ export const authUser: RequestHandler = async (req: Request | any, res, next) =>
     const decodeToken = JWT.verify(token, config.SECRET_KEY as string);
 
     const user = await User.findOneBy({
-      id: (decodeToken as UserDoc).id,
+      id: (decodeToken as User).id,
     });
 
     if (!user) {
@@ -65,7 +63,7 @@ export const authAdmin: RequestHandler = async (req: Request | any, res, next) =
     const decodeToken = JWT.verify(token, process.env.SECRET_KEY as string);
 
     const user = await User.findOneBy({
-      id: (decodeToken as UserDoc).id,
+      id: (decodeToken as User).id,
     });
 
     if (!user) {

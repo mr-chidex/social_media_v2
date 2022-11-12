@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 
-import { UserDoc } from '../libs/types';
 import { ValidateUser } from '../utils/user.validators';
 import { User } from '../entities/User';
 import hashPassword from '../utils/hashPassword';
@@ -14,7 +13,7 @@ import getToken from '../utils/getToken';
  * @acces Public
  */
 export const registerUser: RequestHandler = async (req, res) => {
-  const { error, value } = ValidateUser(req.body as UserDoc);
+  const { error, value } = ValidateUser(req.body as User);
 
   if (error)
     return res.status(422).json({
@@ -22,7 +21,7 @@ export const registerUser: RequestHandler = async (req, res) => {
       message: error.details[0].message,
     });
 
-  const { username, email, password } = value as UserDoc;
+  const { username, email, password } = value as User;
 
   //check if username is already in use
   let userExist = await User.findOneBy({ username });
@@ -62,7 +61,7 @@ export const registerUser: RequestHandler = async (req, res) => {
  * @acces Public
  */
 export const loginUser: RequestHandler = async (req, res) => {
-  const { username, password } = req.body as UserDoc;
+  const { username, password } = req.body as User;
 
   //check if user exist
   const user = await User.findOneBy({ username });

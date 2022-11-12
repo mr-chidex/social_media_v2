@@ -1,8 +1,8 @@
 import Joi from 'joi';
 
-import { UserDoc } from '../libs/types';
+import { User } from '../entities/User';
 
-export const ValidateUser = (userData: UserDoc) => {
+export const ValidateUser = (userData: User) => {
   return Joi.object({
     username: Joi.string().min(3).max(20).trim().required(),
     email: Joi.string().required().email().normalize(),
@@ -10,14 +10,14 @@ export const ValidateUser = (userData: UserDoc) => {
   }).validate(userData);
 };
 
-export const ValidateAuth = (userData: UserDoc) => {
+export const ValidateAuth = (userData: User) => {
   return Joi.object({
     username: Joi.string().min(3).trim().required(),
     email: Joi.string().required().email().normalize(),
   }).validate(userData);
 };
 
-export const ValidateUserUpdate = (userData: UserDoc) => {
+export const ValidateUserUpdate = (userData: User) => {
   return Joi.object({
     username: Joi.string().min(3).max(20).trim().required(),
     biography: Joi.optional(),
