@@ -136,9 +136,10 @@ export const updateComment: RequestHandler = async (req: IRequest, res) => {
     } catch (err) {
       throw new Error('error uploading file');
     }
-     await comment.save();
+    
   }
-
+  await comment.save();
+  
   res.json({ success: true, message: 'comment updated' });
 };
 
