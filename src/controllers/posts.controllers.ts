@@ -172,7 +172,6 @@ export const updatePost: RequestHandler = async (req: IRequest, res) => {
         id: uploadedImage.public_id?.split('/')[2],
       };
 
-      await post.save();
     } catch (err) {
       throw new Error('error uploading file');
     }
