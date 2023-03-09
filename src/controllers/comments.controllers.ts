@@ -132,10 +132,11 @@ export const updateComment: RequestHandler = async (req: IRequest, res) => {
         id: uploadedImage.public_id?.split('/')[2],
       };
 
-      await comment.save();
+     
     } catch (err) {
       throw new Error('error uploading file');
     }
+     await comment.save();
   }
 
   res.json({ success: true, message: 'comment updated' });
